@@ -15,13 +15,18 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const TrafficChart = () => {
   const [data, setData] = useState(null);
-  const [timeRange, setTimeRange] = useState("Month");
+  const [timeRange, setTimeRange] = useState("Year");
 
   useEffect(() => {
     const fetchData = async () => {
+      const urlMonth="http://127.0.0.1:8000/api/view/views-by-month";
+      const urlYear="http://127.0.0.1:8000/api/view/views-by-year";
+
       try {
-        const response = await import("../traffic.json");
-        setData(response.default);
+        const response = await fetch(timeRange=="Month"?urlMonth:urlYear);
+        console.log(response);
+        const result = await response.json();
+        setData(result);
       } catch (error) {
         console.error("Lỗi khi tải dữ liệu JSON:", error);
       }
@@ -30,27 +35,13 @@ const TrafficChart = () => {
   }, []);
 
   const chartData = {
-    labels: data ? data.map((item) => item.month) : [],
+    labels: data ? data.map((item) => (timeRange === "Month" ? item.month+" / "+item.year : item.year)) : [],
     datasets: [
       {
-        label: "Visits",
-        data: data ? data.map((item) => item.visits) : [],
+        label: "View",
+        data: data ? data.map((item) => item.count) : [],
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
-        tension: 0.4,
-      },
-      {
-        label: "Unique Users",
-        data: data ? data.map((item) => item.unique) : [],
-        borderColor: "rgba(153, 102, 255, 1)",
-        backgroundColor: "rgba(153, 102, 255, 0.2)",
-        tension: 0.4,
-      },
-      {
-        label: "Pageviews",
-        data: data ? data.map((item) => item.pageviews) : [],
-        borderColor: "rgba(255, 159, 64, 1)",
-        backgroundColor: "rgba(255, 159, 64, 0.2)",
         tension: 0.4,
       },
     ],
@@ -110,9 +101,6 @@ const TrafficChart = () => {
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
           <h2>Traffic Overview</h2>
           <div>
-            <button onClick={() => handleTimeRangeChange("Day")} style={{ margin: "0 5px" }}>
-              Day
-            </button>
             <button onClick={() => handleTimeRangeChange("Month")} style={{ margin: "0 5px" }}>
               Month
             </button>
