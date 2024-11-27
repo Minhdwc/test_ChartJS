@@ -1,0 +1,9 @@
+[
+  { "month": "January", "visits": 50, "unique": 40, "pageviews": 100 },
+  { "month": "February", "visits": 75, "unique": 55, "pageviews": 150 },
+  { "month": "March", "visits": 90, "unique": 60, "pageviews": 180 },
+  { "month": "April", "visits": 100, "unique": 70, "pageviews": 200 },
+  { "month": "May", "visits": 60, "unique": 50, "pageviews": 120 },
+  { "month": "June", "visits": 80, "unique": 60, "pageviews": 140 },
+  { "month": "July", "visits": 110, "unique": 85, "pageviews": 220 }
+]
